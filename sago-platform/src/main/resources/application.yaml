@@ -1,0 +1,44 @@
+# common(dev, prod)
+mybatis:
+  mapper-locations: mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+
+---
+# dev setting
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: "jdbc:mariadb://localhost:3306/sago"
+    username: "dahyeannelee"
+    password: "root"
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+---
+# prod setting
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: "jdbc:mariadb://101.101.216.6:3306/sago"
+    username: "root"
+    password:
+
+  redis:
+    host: 101.101.216.6
+    port: 6379
