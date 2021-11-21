@@ -6,7 +6,6 @@ pipeline {
             steps {
                 echo 'Building the project with ${env.BUILD_NUMBER}'
                 sh './gradlew clean build'
-                archiveArtifacts artifacts: '**/build/lib/*.jar', fingerprint: true
             }
         }
         stage('Test') {
