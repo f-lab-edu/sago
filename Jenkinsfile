@@ -6,7 +6,7 @@ pipeline {
             steps {
                 echo 'Building the project with ${env.BUILD_NUMBER}'
                 sh './gradlew build'
-                archiveArtifacts 'sago/target/*.jar'
+                archiveArtifacts '**/target/*.jar'
             }
         }
         stage('Test') {
