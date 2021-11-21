@@ -5,8 +5,8 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the project with ${env.BUILD_NUMBER}'
-                sh './gradlew build'
-                archiveArtifacts '**/target/*.jar'
+                sh './gradlew clean build'
+                archiveArtifacts artifacts '**/target/*.jar'
             }
         }
         stage('Test') {
