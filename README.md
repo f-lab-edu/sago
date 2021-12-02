@@ -6,8 +6,10 @@
 - Business Rule 및 기술 이슈 해결사항은 Wiki 페이지를 참고해주세요.
 
 # Architecture 🏛
+![sago application architecture](https://user-images.githubusercontent.com/15176192/144371505-70947139-8ca2-412b-9c71-c861bab006e7.jpg)
 
 # ERD 💿
+
 
 # Reporting Issues 👩‍💻
 
