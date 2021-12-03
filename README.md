@@ -9,7 +9,7 @@
 ![sago application architecture](https://user-images.githubusercontent.com/15176192/144371505-70947139-8ca2-412b-9c71-c861bab006e7.jpg)
 
 # ERD 💿
-![sago_database_schema](https://user-images.githubusercontent.com/15176192/144543653-45e5d404-861d-49c4-8d46-8f7a6eeabf20.jpg)
+![sago_database_schema](https://user-images.githubusercontent.com/15176192/144553411-2cc18c07-c414-4dc6-915f-d6a46e773877.jpg)
 
 # Reporting Issues 👩‍💻
 
