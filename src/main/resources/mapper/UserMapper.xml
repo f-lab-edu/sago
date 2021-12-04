@@ -4,7 +4,7 @@
 
 <mapper namespace="com.dhmall.user.mapper.UserMapper">
     <insert id="insertUser" parameterType="com.dhmall.user.dto.UserDto">
-        INSERT INTO users(id, user_id, email, password, name, phone_number, birth, auth_key, auth_status, address, created_at, updated_at)
+        INSERT INTO users(id, nickname, email, password, name, phone_number, birth, auth_key, auth_status, address, created_at, updated_at)
         VALUES(NULL, #{userId}, #{email}, #{password}, #{name}, #{phoneNumber}, #{birth}, #{authKey}, #{authStatus}, #{address}, #{createdAt}, #{updatedAt})
     </insert>
 
@@ -13,10 +13,10 @@
     </update>
     
     <select id="findByIdAndPassword" parameterType="String" resultType="com.dhmall.user.dto.UserDto">
-        SELECT * FROM users WHERE user_id = #{userId} AND password = #{password}
+        SELECT * FROM users WHERE nickname = #{userId} AND password = #{password}
     </select>
 
     <select id="findById" parameterType="String" resultType="com.dhmall.user.dto.UserDto">
-        SELECT * FROM users WHERE user_id = #{userId}
+        SELECT * FROM users WHERE nickname = #{userId}
     </select>
 </mapper>
