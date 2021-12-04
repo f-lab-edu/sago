@@ -1,3 +1,8 @@
+<div id="project_logo" align="center" >
+  <img src="https://user-images.githubusercontent.com/15176192/144699806-1ce60d8b-3f9d-4c86-8b74-75baa37eb4d4.png" width="500" height="500" />
+</div>
+
+
 # sago 🎨
 - Rest API를 활용한 실시간 온라인 경매 거래 플랫폼 애플리케이션입니다.
 - 회원가입 후 이용 가능하며 실시간 채팅창을 통해 경매에 참여할 수 있습니다.
