@@ -14,3 +14,5 @@
 # Reporting Issues 👩‍💻
 
 # Prototype 🏙
+
+실제 테스트 화면: https://ovenapp.io/view/3S6tipmCwIm8jLibBCRX2yekB9PndvhP/oMnl5
