@@ -1,6 +1,7 @@
 package com.dhmall.user.service;
 
 import com.dhmall.user.dto.LoginDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,15 +16,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class LoginSecurityService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
-
-    public LoginSecurityService(PasswordEncoder passwordEncoder, UserService userService) {
-        this.passwordEncoder = passwordEncoder;
-        this.userService = userService;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -31,7 +28,7 @@ public class LoginSecurityService implements UserDetailsService {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("user"));
 
-        return new User(loginUser.getUserId(), passwordEncoder.encode(loginUser.getPassword()), grantedAuthorities);
+        return new User(loginUser.getNickname(), passwordEncoder.encode(loginUser.getPassword()), grantedAuthorities);
     }
 
     public String getCurrentLoginUsername() {

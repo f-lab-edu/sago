@@ -5,18 +5,14 @@
 <mapper namespace="com.dhmall.user.mapper.UserMapper">
     <insert id="insertUser" parameterType="com.dhmall.user.dto.UserDto">
         INSERT INTO users(id, nickname, email, password, name, phone_number, birth, auth_key, auth_status, address, created_at, updated_at)
-        VALUES(NULL, #{userId}, #{email}, #{password}, #{name}, #{phoneNumber}, #{birth}, #{authKey}, #{authStatus}, #{address}, #{createdAt}, #{updatedAt})
+        VALUES(NULL, #{nickname}, #{email}, #{password}, #{name}, #{phoneNumber}, #{birth}, #{authKey}, #{authStatus}, #{address}, #{createdAt}, #{updatedAt})
     </insert>
 
     <update id="updateAuthStatus" parameterType="String" >
         UPDATE users u SET auth_status = 1 WHERE u.email = #{email}
     </update>
-    
-    <select id="findByIdAndPassword" parameterType="String" resultType="com.dhmall.user.dto.UserDto">
-        SELECT * FROM users WHERE nickname = #{userId} AND password = #{password}
-    </select>
 
     <select id="findById" parameterType="String" resultType="com.dhmall.user.dto.UserDto">
-        SELECT * FROM users WHERE nickname = #{userId}
+        SELECT * FROM users WHERE nickname = #{nickname}
     </select>
 </mapper>

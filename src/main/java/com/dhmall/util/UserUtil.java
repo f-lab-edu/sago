@@ -1,22 +1,26 @@
 package com.dhmall.util;
 
-import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import java.security.MessageDigest;
-
+@Slf4j
 public class UserUtil {
 
-    @SneakyThrows
-    public static StringBuffer encryptInfo(String password, String authKey) {
-        String raw = password + authKey;
-        MessageDigest md = MessageDigest.getInstance("SHA-512");
-        md.update(raw.getBytes());
-        byte[] digested = md.digest();
+    /**
+     * Hash Algorithm: BCrypt
+     * @param password
+     * @return encrypted password
+     */
+    public static String encryptInfo(String password) {
+        String raw = password;
+        String salt = BCrypt.gensalt(16);
+        String hashed = BCrypt.hashpw(raw, salt);
 
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < digested.length; ++i) {
-            sb.append(Integer.toHexString(0xff & digested[i]));
-        }
-        return sb;
+        return hashed;
+    }
+
+    public static boolean verifyEncryption(String raw, String hashed) {
+
+        return BCrypt.checkpw(raw, hashed);
     }
 }

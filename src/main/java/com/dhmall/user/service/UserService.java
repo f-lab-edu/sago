@@ -1,111 +1,93 @@
 package com.dhmall.user.service;
 
-import com.dhmall.exception.UserException;
+import com.dhmall.exception.ErrorCode;
+import com.dhmall.exception.UserAccountException;
 import com.dhmall.user.dto.LoginDto;
 import com.dhmall.user.dto.UserDto;
-import com.dhmall.user.jwt.TokenProvider;
 import com.dhmall.user.mapper.UserMapper;
 import com.dhmall.util.UserUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class UserService {
 
-    private static final Logger logger = LogManager.getLogger(UserService.class.getName());
-
     private final UserMapper userMapper;
-    private final TokenProvider tokenProvider;
+    private final EmailService emailService;
     private LoginDto loginUser;
 
-    @Value("${spring.mail.username}")
-    private String from;
-
-    private JavaMailSender mailSender;
-
-    public UserService(UserMapper userMapper, JavaMailSender mailSender, TokenProvider tokenProvider) {
-        this.userMapper = userMapper;
-        this.mailSender = mailSender;
-        this.tokenProvider = tokenProvider;
-    }
-
-    @Transactional(rollbackFor = {java.lang.Exception.class})
+    @Transactional
     public void registerUser(UserDto newUser) {
-        // authKey 생성
+
+        // authKey(SNS API Key) 임시 등록
         newUser.setAuthStatus(0);
-        newUser.setAuthKey(UserUtil.encryptInfo(newUser.getUserId(), "").toString());
+        newUser.setAuthKey("SNS API Key Value");
 
         // 사용자 비밀번호 암호화
-        newUser.setPassword(UserUtil.encryptInfo(newUser.getPassword(), newUser.getAuthKey()).toString());
+        newUser.setPassword(UserUtil.encryptInfo(newUser.getPassword()));
 
-        // 가입 인증 메일 전송
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(from);
-        message.setTo(newUser.getEmail());
-        message.setSubject("Sago 서비스 가입인증 요청");
-        message.setSentDate(Date.from(Instant.now()));
-        message.setText("회원가입 완료를 위해 이곳을 눌러주세요.");
-        message.setText(new StringBuffer().append("<h1>Sago 서비스 가입 메일인증 입니다</h1>")
-                .append("<a href='http://localhost:8080/users/verifyEmail?email=")
-                .append(newUser.getEmail()).append("&key=").append(newUser.getAuthKey())
-                .append("' target='_blenk'>가입 완료를 위해 이메일 이곳을 눌러주세요</a>").toString());
+        // 가입 인증 메일 전송(비동기)
+        emailService.sendEmail(newUser);
 
-        newUser.setCreatedAt(Timestamp.from(Instant.now()));
-        newUser.setUpdatedAt(Timestamp.from(Instant.now()));
+        String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+        String updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+
+        newUser.setCreatedAt(Timestamp.valueOf(createdAt));
+        newUser.setUpdatedAt(Timestamp.valueOf(updatedAt));
 
         this.userMapper.insertUser(newUser);
-
-        mailSender.send(message);
     }
 
-    @Transactional(rollbackFor = {java.lang.NullPointerException.class})
+    @Transactional
     public void verifyEmail(String email) {
         this.userMapper.updateAuthStatus(email);
     }
 
-    @Transactional
-    public String checkDuplicateId(String userId) {
-        UserDto user = userMapper.findById(userId);
-        if(user != null) throw new UserException("이미 등록된 아이디입니다.");
-        return userId;
+    public String checkDuplicateId(String nickname) {
+        UserDto user = userMapper.findById(nickname);
+        if(user != null) throw new UserAccountException(HttpStatus.BAD_REQUEST, ErrorCode.CLIENT_ALREADY_EXISTED_ACCOUNT_ERROR, "이미 등록된 아이디입니다.");
+        return nickname;
     }
 
-    @Transactional
-    public void login(String userId, String password) {
-
-        String authKey = UserUtil.encryptInfo(userId, "").toString();
-        String encrypedPasswd = UserUtil.encryptInfo(password, authKey).toString();
-        UserDto userFromDB = this.userMapper.findByIdAndPassword(userId, encrypedPasswd);
+    public void login(String nickname, String password) {
+        loginUser = new LoginDto();
+        UserDto userFromDB = this.userMapper.findById(nickname);
+        log.info(password + " , " + userFromDB.getPassword());
+        boolean isPasswdMatched = UserUtil.verifyEncryption(password, userFromDB.getPassword());
 
         // 회원가입 여부
         if(userFromDB == null) {
-            throw new UserException("등록되지 않은 계정입니다.");
+            throw new UserAccountException(HttpStatus.BAD_REQUEST, ErrorCode.CLIENT_NOT_REGISTERED_ACCOUNT_ERROR, "등록되지 않은 계정입니다.");
+        }
+
+        if(!isPasswdMatched) {
+            throw new UserAccountException(HttpStatus.BAD_REQUEST, ErrorCode.CLIENT_ID_PASSWORD_MISMATCH_ERROR, "입력하신 아이디 혹은 비밀번호를 확인해주세요.");
         }
 
         // 이메일 인증 여부
         if(userFromDB.getAuthStatus() == 0) {
-            throw new UserException("이메일 인증이 필요합니다. 이메일 인증 여부를 확인해주세요.");
+            throw new UserAccountException(HttpStatus.BAD_REQUEST, ErrorCode.CLIENT_UNVERIFIED_EMAIL_ACCOUNT_ERROR, "이메일 인증이 필요합니다. 이메일 인증 여부를 확인해주세요.");
         }
 
-        loginUser = LoginDto.builder().userId(userId).password(password).build();
+        loginUser.setNickname(nickname);
+        loginUser.setPassword(password);
     }
 
     public LoginDto getLoginUser() {
         return loginUser;
     }
 
-    @Transactional
-    public UserDto info(String userId) {
-        return userMapper.findById(userId);
+    public UserDto info(String nickname) {
+        return userMapper.findById(nickname);
     }
 
 }

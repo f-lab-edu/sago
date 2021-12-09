@@ -12,7 +12,5 @@ public interface UserMapper {
 
     void updateAuthStatus(String email);
 
-    UserDto findByIdAndPassword(String userId, String password);
-
-    UserDto findById(String userId);
+    UserDto findById(String nickname);
 }
