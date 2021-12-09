@@ -7,8 +7,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.math.BigInteger;
-import java.sql.Timestamp;
-import java.time.ZonedDateTime;
 
 @Getter
 @Setter

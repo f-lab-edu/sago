@@ -20,7 +20,6 @@ public class UserUtil {
     }
 
     public static boolean verifyEncryption(String raw, String hashed) {
-
         return BCrypt.checkpw(raw, hashed);
     }
 }
