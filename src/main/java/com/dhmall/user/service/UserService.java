@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Service
@@ -38,11 +40,8 @@ public class UserService {
         // 가입 인증 메일 전송(비동기)
         emailService.sendEmail(newUser);
 
-        String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
-        String updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
-
-        newUser.setCreatedAt(Timestamp.valueOf(createdAt));
-        newUser.setUpdatedAt(Timestamp.valueOf(updatedAt));
+        newUser.setCreatedAt(ZonedDateTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
+        newUser.setUpdatedAt(ZonedDateTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
 
         this.userMapper.insertUser(newUser);
     }
