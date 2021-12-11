@@ -11,7 +11,10 @@ import java.math.BigInteger;
 
 @Getter
 @Setter
-@Builder
+/* Jackson JSON 라이브러리를 활용하여 HTTP 통신을 할 때, 필드값을 매개변수로 받는 생성자를 선언해주어야 JSON 데이터 타입으로 형변환이 가능.
+* @Builder 어노테이션을 활용하면 deserialize exception 발생!(참고: https://www.baeldung.com/jackson-exception)
+*  */
+@RequiredArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
 

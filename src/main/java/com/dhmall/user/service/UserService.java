@@ -3,6 +3,7 @@ package com.dhmall.user.service;
 import com.dhmall.exception.ErrorCode;
 import com.dhmall.exception.UserAccountException;
 import com.dhmall.user.dto.LoginDto;
+import com.dhmall.user.dto.MailDto;
 import com.dhmall.user.dto.UserDto;
 import com.dhmall.user.mapper.UserMapper;
 import com.dhmall.util.SecurityUtil;
@@ -36,7 +37,10 @@ public class UserService {
         newUser.setPassword(SecurityUtil.encryptInfo(newUser.getPassword()));
 
         // 가입 인증 메일 전송(비동기)
-        emailService.sendEmail(newUser);
+        MailDto email = new MailDto();
+        email.setName(newUser.getName());
+        email.setEmail(newUser.getEmail());
+        emailService.sendEmail(email);
 
         newUser.setCreatedAt(ZonedDateTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
         newUser.setUpdatedAt(ZonedDateTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
