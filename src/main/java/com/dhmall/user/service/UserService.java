@@ -5,7 +5,7 @@ import com.dhmall.exception.UserAccountException;
 import com.dhmall.user.dto.LoginDto;
 import com.dhmall.user.dto.UserDto;
 import com.dhmall.user.mapper.UserMapper;
-import com.dhmall.util.UserUtil;
+import com.dhmall.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -33,7 +33,7 @@ public class UserService {
         newUser.setAuthKey("SNS API Key Value");
 
         // 사용자 비밀번호 암호화
-        newUser.setPassword(UserUtil.encryptInfo(newUser.getPassword()));
+        newUser.setPassword(SecurityUtil.encryptInfo(newUser.getPassword()));
 
         // 가입 인증 메일 전송(비동기)
         emailService.sendEmail(newUser);
@@ -59,7 +59,7 @@ public class UserService {
         loginUser = new LoginDto();
         UserDto userFromDB = this.userMapper.findById(nickname);
         log.info(password + " , " + userFromDB.getPassword());
-        boolean isPasswdMatched = UserUtil.verifyEncryption(password, userFromDB.getPassword());
+        boolean isPasswdMatched = SecurityUtil.verifyEncryption(password, userFromDB.getPassword());
 
         // 회원가입 여부
         if(userFromDB == null) {
