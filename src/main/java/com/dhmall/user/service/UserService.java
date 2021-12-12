@@ -27,7 +27,7 @@ public class UserService {
     private LoginDto loginUser;
 
     @Transactional
-    public void registerUser(UserDto newUser) {
+    public UserDto registerUser(UserDto newUser) {
 
         // authKey(SNS API Key) 임시 등록
         newUser.setAuthStatus(0);
@@ -46,6 +46,8 @@ public class UserService {
         newUser.setUpdatedAt(ZonedDateTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
 
         this.userMapper.insertUser(newUser);
+
+        return newUser;
     }
 
     @Transactional

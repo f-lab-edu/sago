@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigInteger;
 
@@ -39,10 +40,12 @@ public class UserDto {
     private String name;
 
     @NotEmpty(message = "핸드폰 번호를 입력해주세요.")
+//    @Pattern(regexp = "")
     @Size(max = 15)
     private String phoneNumber;
 
     @NotEmpty(message = "생년월일을 입력해주세요.")
+//    @Pattern(regexp = "")
     @Size(max = 10)
     private String birth;
 
