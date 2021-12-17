@@ -27,7 +27,7 @@ public class UserDto {
     private String nickname;
 
     @NotEmpty(message = "이메일 계정을 입력해주세요.")
-//    @Email(regexp = "^([0-9a-zA-Z]*)@([a-z])", message = "유효하지 않은 이메일 주소입니다.")
+    @Email(regexp = "${regex.email}", message = "유효하지 않은 이메일 주소입니다.")
     @Size(max = 30)
     private String email;
 
@@ -40,12 +40,12 @@ public class UserDto {
     private String name;
 
     @NotEmpty(message = "핸드폰 번호를 입력해주세요.")
-//    @Pattern(regexp = "")
+    @Pattern(regexp = "^01(?:0|1|[6-9])-(?:\\\\d{3}|\\\\d{4})-\\\\d{4}$")
     @Size(max = 15)
     private String phoneNumber;
 
     @NotEmpty(message = "생년월일을 입력해주세요.")
-//    @Pattern(regexp = "")
+    @Pattern(regexp = "^(\\\\d{4}).(0[0-9]|1[0-2]).(0[1-9]|[1-2][0-9]|3[0-1])$")
     @Size(max = 10)
     private String birth;
 
