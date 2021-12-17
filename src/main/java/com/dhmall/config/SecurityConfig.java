@@ -60,6 +60,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/signUp").permitAll()
                 .antMatchers("/users/verifyEmail").permitAll()
                 .antMatchers("/users/isAlreadyUsed").permitAll()
+                // TODO: STOMP 적용 후 인증 로직 추가
+                .antMatchers("/auctions/chat").permitAll()
+                .antMatchers("/auctions/chatRoom").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
