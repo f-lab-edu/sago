@@ -1,7 +1,6 @@
 package com.dhmall.user.service;
 
 import com.dhmall.user.dto.MailDto;
-import com.dhmall.user.dto.UserDto;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.RequiredArgsConstructor;
