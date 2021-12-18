@@ -1,0 +1,77 @@
+# common(dev, prod)
+mybatis:
+  mapper-locations: mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    multiple-result-sets-enabled: true
+    default-statement-timeout: 3000
+
+server:
+  port: 8080
+  shutdown: graceful
+
+#logging:
+#  level:
+#    org.springframework.transaction: TRACE
+
+logging:
+  config: classpath:log4j2.xml
+
+# secret: base64 encoding value
+jwt:
+  header: Authorization
+  secret: ZG5JWFRBRzB2bXFzam5OX0lXVUxGTk1xcW40RFZHZEtMQUFmQ0dEVlhjVkpLOHdBSlV4bXRsbzNTd0MzZWlDaQo=
+  token-validity-in-seconds: 36000
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: teamsagocorp@gmail.com
+    password: cragflqpsvrmauyo
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  lifecycle:
+    timeout-per-shutdown-phase: 100s
+
+  profiles:
+    active: dev
+
+---
+# dev setting
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sago?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: devDB
+
+  redis:
+    host: localhost
+    port: 6379
+
+---
+# prod setting
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://server.sagogaja.com:3306/sago?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password:
+
+  redis:
+    host: server.sagogaja.com
+    port: 6379
