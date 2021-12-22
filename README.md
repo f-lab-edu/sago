@@ -18,6 +18,7 @@
 
 # Reporting Issues 👩‍💻
 - 실시간 경매 채팅에서의 채팅 메시지 처리 성능 이슈
+- DB 장애 대응(Master-Slave)
 
 # Prototype 🏙
 
