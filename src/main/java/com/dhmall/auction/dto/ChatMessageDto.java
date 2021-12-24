@@ -1,14 +1,13 @@
 package com.dhmall.auction.dto;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
-import java.math.BigInteger;
-import java.time.ZonedDateTime;
-
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class ChatMessageDto {
 
     public enum MessageType {
@@ -18,17 +17,17 @@ public class ChatMessageDto {
     private MessageType type;
 
     @Id
-    private BigInteger id;
+    private String id;
 
-    private BigInteger roomId;
+    private String roomId;
 
-    private BigInteger userId;
+    private String userId;
 
     private String nickname;
 
     private String message;
 
-    ZonedDateTime createdAt;
+    private String createdAt;
 
-    ZonedDateTime updatedAt;
+    private String updatedAt;
 }

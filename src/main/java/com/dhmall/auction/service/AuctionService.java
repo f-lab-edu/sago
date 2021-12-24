@@ -1,18 +1,21 @@
 package com.dhmall.auction.service;
 
+import com.dhmall.auction.dto.ChatMessageDto;
 import com.dhmall.auction.dto.ChatRoomDto;
 import com.dhmall.auction.mapper.AuctionMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.dhmall.auction.pubsub.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
+import javax.annotation.PostConstruct;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,31 +25,42 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuctionService {
 
-    private final ObjectMapper objectMapper;
-    private Map<BigInteger, ChatRoomDto> roomList = new HashMap<>();
+    private final RedisMessageListenerContainer redisMessageListener;
+    private final RedisSubscriber redisSubscriber;
+    private static final String AUCTION_ROOMS = "AUCTION_ROOM";
+    private final AuctionMapper auctionMapper;
 
-    public <T> void sendMessage(WebSocketSession session, T message) {
-        try {
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
+    private Map<String, ChannelTopic> topics;
+
+    private final RedisTemplate<String, Object> redisTemplate;
+    private HashOperations<String, String, ChatRoomDto> opsHashChatRoom;
+
+    @PostConstruct
+    private void init() {
+        opsHashChatRoom = redisTemplate.opsForHash();
+        topics = new HashMap<>();
+    }
+
+    public List<ChatRoomDto> findAllAuctionRooms() {
+        return opsHashChatRoom.values(AUCTION_ROOMS);
+    }
+
+    public void saveChatMessage(ChatMessageDto chatMessage) {
+        chatMessage.setCreatedAt(ZonedDateTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
+        chatMessage.setUpdatedAt(ZonedDateTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
+        auctionMapper.insertChatMessage(chatMessage);
+    }
+
+    public void enterChatRoom(String roomId) {
+        ChannelTopic topic = topics.get(roomId);
+        if (topic == null) {
+            topic = new ChannelTopic(roomId);
+            redisMessageListener.addMessageListener(redisSubscriber, topic);
+            topics.put(roomId, topic);
         }
     }
 
-    /**
-     * Batch 시스템 적용 전 테스트를 위한 코드(삭제 에정)
-     */
-    public void createAllAuctionRooms(List<String> rooms) {
-        for(String id : rooms) {
-            ChatRoomDto room = new ChatRoomDto();
-            room.setId(new BigInteger(id));
-            roomList.put(room.getId(), room);
-        }
+    public ChannelTopic getTopic(String roomId) {
+        return topics.get(roomId);
     }
-
-
-    public ChatRoomDto joinAuction(BigInteger roomId) {
-        return roomList.get(roomId);
-    }
-
 }
