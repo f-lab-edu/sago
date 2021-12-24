@@ -1,20 +1,17 @@
 package com.dhmall.user.service;
 
+import com.dhmall.exception.UserAccountException;
 import com.dhmall.user.dto.UserDto;
 import com.dhmall.user.mapper.UserMapper;
-import com.dhmall.util.SecurityUtil;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import com.dhmall.util.SecurityUtil;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
-import org.springframework.test.context.ActiveProfiles;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -26,7 +23,7 @@ import java.util.Set;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ActiveProfiles("dev")
+@PrepareForTest({SecurityUtil.class})
 public class UserServiceTest {
 
     private final UserMapper userMapper = mock(UserMapper.class);
@@ -63,6 +60,7 @@ public class UserServiceTest {
     public static void createBeanObject() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
+        mockStatic(SecurityUtil.class);
     }
 
     @AfterAll
@@ -74,20 +72,16 @@ public class UserServiceTest {
     void registerValidUser() {
         // when
         doNothing().when(userMapper).insertUser(any());
-        /* UserService static class injection */
-        /** TODO: static method 리턴값으로 암호화된 비밀번호 얻는 방식 알아보기 **/
-        MockedStatic<SecurityUtil> securityUtilMockedStatic = mockStatic(SecurityUtil.class);
         UserDto actual = userService.registerUser(expected);
 
         //then
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getNickname(), actual.getNickname());
         assertEquals(expected.getEmail(), actual.getEmail());
-//        assertEquals(expected.getPassword(), "TBD");
+        assertEquals(expected.getPassword(), actual.getPassword());
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getPhoneNumber(), actual.getPhoneNumber());
         assertEquals(expected.getBirth(), actual.getBirth());
-        assertEquals(expected.getAuthKey(), actual.getAuthKey());
         assertEquals(expected.getAuthStatus(), actual.getAuthStatus());
         assertEquals(expected.getAddress(), actual.getAddress());
         assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
@@ -95,7 +89,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void registerUserWithNullValue() {
+    void registerUserWithNullUser() {
         // given
         UserDto nullNickname = expected;
         UserDto nullEmail = expected;
@@ -134,29 +128,146 @@ public class UserServiceTest {
     }
 
     @Test
-    void registerUserWithInvalidValue() {
+    void registerUserWithInvalidUser() {
         // given - invalid email
         UserDto invalidEmail = expected;
+        invalidEmail.setEmail("email@gmailcom");
 
         // when - invalid email
+        Set<ConstraintViolation<UserDto>> emailViolation = validator.validate(invalidEmail);
 
         // then - invalid email
+        assertFalse(emailViolation.isEmpty());
 
         // given - invalid phone number
         UserDto invalidPhoneNumber = expected;
+        invalidPhoneNumber.setPhoneNumber("111-223.1232");
 
         // when - invalid phone number
+        Set<ConstraintViolation<UserDto>> phoneNumberViolation = validator.validate(invalidPhoneNumber);
 
         // then - invalid phone number
-
+        assertFalse(phoneNumberViolation.isEmpty());
 
         // given - invalid birth
         UserDto invalidBirth = expected;
+        invalidBirth.setBirth("2001-12.12");
 
         // when - invalid birth
+        Set<ConstraintViolation<UserDto>> birthViolation = validator.validate(invalidBirth);
 
         // then - invalid birth
+        assertFalse(birthViolation.isEmpty());
+    }
 
+    @Test
+    void checkDuplicateIdWithValidId() {
+        // when
+        String actual = userService.checkDuplicateId(expected.getNickname());
 
+        // then
+        assertEquals(expected.getNickname(), actual);
+    }
+
+    @Test
+    void checkDuplicateIdWithInvalidId() {
+        // when
+        Exception actual = assertThrows(UserAccountException.class, () -> {
+            when(userMapper.findById(anyString())).thenReturn(expected);
+            userService.checkDuplicateId(anyString());
+        });
+
+        // then
+        String expectedMessage = "이미 등록된 아이디입니다.";
+        String actualMessage = actual.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void loginUnregisteredUser() {
+        // given
+        String nickname = "newUser";
+        String password = "Welcome!";
+        UserDto nonExistedAccount = new UserDto();
+        nonExistedAccount.setNickname("");
+        nonExistedAccount.setPassword("");
+        nonExistedAccount.setAuthStatus(-1);
+
+        // when
+        Exception actual = assertThrows(UserAccountException.class, () -> {
+            when(userMapper.findById(nickname)).thenReturn(nonExistedAccount);
+            userService.login(nickname, password);
+        });
+
+        // then
+        String expectedMessage = "등록되지 않은 계정입니다.";
+        String actualMessage = actual.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void loginUnVerifiedUser() {
+        // given
+        String nickname = "sagotest4";
+        String password = "test4";
+        UserDto unVerified = new UserDto();
+        unVerified.setNickname(nickname);
+        unVerified.setPassword(password);
+        unVerified.setAuthStatus(0);
+
+        // when
+        Exception actual = assertThrows(UserAccountException.class, () -> {
+            when(userMapper.findById(nickname)).thenReturn(unVerified);
+            userService.login(nickname, password);
+        });
+
+        // then
+        String expectedMessage = "이메일 인증이 필요합니다. 이메일 인증 여부를 확인해주세요.";
+        String actualMessage = actual.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void loginAccountNicknameUnmatched() {
+        // given
+        String nickname = "sagotest2";
+        String password = "test10";
+        UserDto unmatchedNickname = new UserDto();
+        unmatchedNickname.setNickname("sagotest1");
+        unmatchedNickname.setPassword(password);
+        unmatchedNickname.setAuthStatus(1);
+
+        // when
+        Exception actual = assertThrows(UserAccountException.class, () -> {
+            when(userMapper.findById(nickname)).thenReturn(unmatchedNickname);
+            userService.login(nickname, password);
+        });
+
+        // then
+        String expectedMessage = "입력하신 아이디를 확인해주세요.";
+        String actualMessage = actual.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void loginAccountPasswordUnmatched() {
+        // given
+        String nickname = "sagotest2";
+        String password = "test10";
+        UserDto unmatchedPasswd = new UserDto();
+        unmatchedPasswd.setNickname(nickname);
+        unmatchedPasswd.setPassword("test20");
+        unmatchedPasswd.setAuthStatus(1);
+
+        // when
+        Exception actual = assertThrows(UserAccountException.class, () -> {
+            when(userMapper.findById(nickname)).thenReturn(unmatchedPasswd);
+            userService.login(nickname, password);
+        });
+
+        // then
+        String expectedMessage = "입력하신 비밀번호를 확인해주세요.";
+        String actualMessage = actual.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 }
