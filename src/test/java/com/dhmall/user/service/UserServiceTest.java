@@ -34,7 +34,7 @@ public class UserServiceTest {
     private static UserDto expected;
 
     @BeforeEach
-    void createObjectEachTime() {
+    public void createObjectEachTime() {
         // given in common
         BigInteger id = new BigInteger("1");
         String nickname = "pranne1224";
