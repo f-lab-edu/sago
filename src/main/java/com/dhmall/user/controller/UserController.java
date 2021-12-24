@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
 
@@ -72,8 +71,7 @@ public class UserController {
 
     @GetMapping("info")
     @ResponseStatus(value= HttpStatus.OK)
-    public UserDto info(HttpServletRequest request) {
-        String accessToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
+    public UserDto info(@RequestHeader(JwtFilter.AUTHORIZATION_HEADER) String accessToken) {
         tokenProvider.validateToken(accessToken);
         UserDto userInfo = userService.info(loginSecurityService.getCurrentLoginUsername());
         return userInfo;
