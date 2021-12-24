@@ -1,28 +1,16 @@
 # common(dev, prod)
-mybatis:
-  mapper-locations: mapper/**/*.xml
-  configuration:
-    map-underscore-to-camel-case: true
-    cache-enabled: true
-    multiple-result-sets-enabled: true
-    default-statement-timeout: 3000
-
 server:
   port: 8080
   shutdown: graceful
-
-#logging:
-#  level:
-#    org.springframework.transaction: TRACE
-
-logging:
-  config: classpath:log4j2.xml
 
 # secret: base64 encoding value
 jwt:
   header: Authorization
   secret: ZG5JWFRBRzB2bXFzam5OX0lXVUxGTk1xcW40RFZHZEtMQUFmQ0dEVlhjVkpLOHdBSlV4bXRsbzNTd0MzZWlDaQo=
-  token-validity-in-seconds: 36000
+  token-validity-in-seconds: 1800
+
+logging:
+  config: classpath:log4j2.xml
 
 spring:
   mail:
@@ -36,9 +24,22 @@ spring:
           auth: true
           starttls:
             enable: true
+    protocol: smtp
 
   lifecycle:
     timeout-per-shutdown-phase: 100s
+
+  devtools:
+    livereload:
+      enabled: true
+
+  freemarker:
+    template-loader-path: classpath:/templates/
+    suffix: .ftl
+
+  batch:
+    jdbc:
+      initialize-schema: always
 
   profiles:
     active: dev
@@ -50,15 +51,23 @@ spring:
     activate:
       on-profile: dev
 
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/sago?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: devDB
-
   redis:
     host: localhost
     port: 6379
+
+app:
+  datasource:
+    mysql:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/sago?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      username: root
+      password: devDB
+
+    h2:
+      jdbc-url: jdbc:h2:mem:mydb
+      username: sa
+      password: password
+      driverClassName: org.h2.Driver
 
 ---
 # prod setting
@@ -66,12 +75,16 @@ spring:
   config:
     activate:
       on-profile: prod
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://server.sagogaja.com:3306/sago?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password:
 
   redis:
-    host: server.sagogaja.com
-    port: 6379
+    master:
+      host: server.sagogaja.com
+      port: 6379
+
+app:
+  datasource:
+    master:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://server.sagogaja.com:3306/sago?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      username: root
+      password:
