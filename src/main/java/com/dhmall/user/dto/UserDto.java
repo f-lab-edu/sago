@@ -49,8 +49,6 @@ public class UserDto {
     @Size(max = 10)
     private String birth;
 
-    private String authKey;
-
     private int authStatus;
 
     @NotEmpty(message = "주소를 입력해주세요.")

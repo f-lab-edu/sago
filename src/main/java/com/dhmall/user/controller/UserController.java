@@ -55,7 +55,6 @@ public class UserController {
     @GetMapping("isAlreadyUsed")
     @ExceptionHandler(ValidationException.class)
     public SagoApiResponse<String> checkDuplicateId(@NonNull String nickname) {
-        log.info("nickname: " + nickname);
         userService.checkDuplicateId(nickname);
         return new SagoApiResponse<>(HttpStatus.OK, "사용 가능한 ID입니다.");
     }

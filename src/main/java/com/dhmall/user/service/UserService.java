@@ -29,10 +29,6 @@ public class UserService {
     @Transactional
     public UserDto registerUser(UserDto newUser) {
 
-        // authKey(SNS API Key) 임시 등록
-        newUser.setAuthStatus(0);
-        newUser.setAuthKey("SNS API Key Value");
-
         // 사용자 비밀번호 암호화
         newUser.setPassword(SecurityUtil.encryptInfo(newUser.getPassword()));
 
@@ -57,28 +53,31 @@ public class UserService {
 
     public String checkDuplicateId(String nickname) {
         UserDto user = userMapper.findById(nickname);
-        if(user != null) throw new UserAccountException(HttpStatus.BAD_REQUEST, ErrorCode.CLIENT_ALREADY_EXISTED_ACCOUNT_ERROR, "이미 등록된 아이디입니다.");
+        if(user != null) throw new UserAccountException(HttpStatus.CONFLICT, ErrorCode.CLIENT_ALREADY_EXISTED_ACCOUNT_ERROR, "이미 등록된 아이디입니다.");
         return nickname;
     }
 
     public void login(String nickname, String password) {
         loginUser = new LoginDto();
         UserDto userFromDB = this.userMapper.findById(nickname);
-        log.info(password + " , " + userFromDB.getPassword());
         boolean isPasswdMatched = SecurityUtil.verifyEncryption(password, userFromDB.getPassword());
 
         // 회원가입 여부
-        if(userFromDB == null) {
-            throw new UserAccountException(HttpStatus.BAD_REQUEST, ErrorCode.CLIENT_NOT_REGISTERED_ACCOUNT_ERROR, "등록되지 않은 계정입니다.");
-        }
-
-        if(!isPasswdMatched) {
-            throw new UserAccountException(HttpStatus.BAD_REQUEST, ErrorCode.CLIENT_ID_PASSWORD_MISMATCH_ERROR, "입력하신 아이디 혹은 비밀번호를 확인해주세요.");
+        if(userFromDB.getNickname().equals("")) {
+            throw new UserAccountException(HttpStatus.FORBIDDEN, ErrorCode.CLIENT_NOT_REGISTERED_ACCOUNT_ERROR, "등록되지 않은 계정입니다.");
         }
 
         // 이메일 인증 여부
         if(userFromDB.getAuthStatus() == 0) {
-            throw new UserAccountException(HttpStatus.BAD_REQUEST, ErrorCode.CLIENT_UNVERIFIED_EMAIL_ACCOUNT_ERROR, "이메일 인증이 필요합니다. 이메일 인증 여부를 확인해주세요.");
+            throw new UserAccountException(HttpStatus.FORBIDDEN, ErrorCode.CLIENT_UNVERIFIED_EMAIL_ACCOUNT_ERROR, "이메일 인증이 필요합니다. 이메일 인증 여부를 확인해주세요.");
+        }
+
+        if(!userFromDB.getNickname().equals(nickname)) {
+            throw new UserAccountException(HttpStatus.FORBIDDEN, ErrorCode.CLIENT_ID_PASSWORD_MISMATCH_ERROR, "입력하신 아이디를 확인해주세요.");
+        }
+
+        if(!isPasswdMatched) {
+            throw new UserAccountException(HttpStatus.FORBIDDEN, ErrorCode.CLIENT_ID_PASSWORD_MISMATCH_ERROR, "입력하신 비밀번호를 확인해주세요.");
         }
 
         loginUser.setNickname(nickname);
