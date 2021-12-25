@@ -188,14 +188,10 @@ public class UserServiceTest {
         // given
         String nickname = "newUser";
         String password = "Welcome!";
-        UserDto nonExistedAccount = new UserDto();
-        nonExistedAccount.setNickname("");
-        nonExistedAccount.setPassword("");
-        nonExistedAccount.setAuthStatus(-1);
 
         // when
         Exception actual = assertThrows(UserAccountException.class, () -> {
-            when(userMapper.findById(nickname)).thenReturn(nonExistedAccount);
+            when(userMapper.findById(nickname)).thenReturn(null);
             userService.login(nickname, password);
         });
 
