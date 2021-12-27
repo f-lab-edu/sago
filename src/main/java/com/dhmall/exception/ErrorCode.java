@@ -1,0 +1,18 @@
+package com.dhmall.exception;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public enum ErrorCode {
+
+    CLIENT_VALIDATION_ERROR(4000),
+    CLIENT_INVALID_TOKEN_ERROR(4001),
+    CLIENT_EXPIRED_TOKEN_ERROR(4002),
+    CLIENT_ALREADY_EXISTED_ACCOUNT_ERROR(4003),
+    CLIENT_UNVERIFIED_EMAIL_ACCOUNT_ERROR(4004),
+    CLIENT_NOT_REGISTERED_ACCOUNT_ERROR(4005),
+    CLIENT_ID_PASSWORD_MISMATCH_ERROR(4005),
+    SERVER_API_ERROR(5000);
+
+    private final int code;
+}
