@@ -11,12 +11,14 @@
 - Business Rule 및 기술 이슈 해결사항은 Wiki 페이지를 참고해주세요.
 
 # Architecture 🏛
-![sago application architecture drawio](https://user-images.githubusercontent.com/15176192/144994763-466fb194-79f8-4896-9816-8ed7f6fd8b89.png)
+![sago application architecture](https://user-images.githubusercontent.com/15176192/147054490-19d0fdf4-1042-429b-94f2-f04d301237a8.jpg)
 
 # ERD 💿
-![sago_database_schema](https://user-images.githubusercontent.com/15176192/144553411-2cc18c07-c414-4dc6-915f-d6a46e773877.jpg)
+![sago_database_schema drawio](https://user-images.githubusercontent.com/15176192/147206951-c9fbc362-adff-490a-9afc-d4bfb59f1a74.png)
 
 # Reporting Issues 👩‍💻
+- 실시간 경매 채팅에서의 채팅 메시지 처리 성능 이슈
+- DB 장애 대응(Master-Slave)
 
 # Prototype 🏙
 
