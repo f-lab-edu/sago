@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Service
 @Slf4j
@@ -38,8 +37,8 @@ public class UserService {
         email.setEmail(newUser.getEmail());
         emailService.sendEmail(email);
 
-        newUser.setCreatedAt(ZonedDateTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
-        newUser.setUpdatedAt(ZonedDateTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
+        newUser.setCreatedAt(ZonedDateTime.now(ZoneId.of("UTC")));
+        newUser.setUpdatedAt(ZonedDateTime.now(ZoneId.of("UTC")));
 
         this.userMapper.insertUser(newUser);
 

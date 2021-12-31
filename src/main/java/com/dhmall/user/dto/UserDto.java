@@ -9,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigInteger;
+import java.time.ZonedDateTime;
 
 @Getter
 @Setter
@@ -54,7 +55,7 @@ public class UserDto {
     @NotEmpty(message = "주소를 입력해주세요.")
     private String address;
 
-    private String createdAt;
+    private ZonedDateTime createdAt;
 
-    private String updatedAt;
+    private ZonedDateTime updatedAt;
 }

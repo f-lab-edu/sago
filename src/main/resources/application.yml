@@ -1,12 +1,4 @@
 # common(dev, prod)
-mybatis:
-  mapper-locations: mapper/**/*.xml
-  configuration:
-    map-underscore-to-camel-case: true
-    cache-enabled: true
-    multiple-result-sets-enabled: true
-    default-statement-timeout: 3000
-
 server:
   port: 8080
   shutdown: graceful
@@ -47,29 +39,23 @@ spring:
     activate:
       on-profile: dev
 
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/sago?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: devDB
-
   redis:
     host: localhost
     port: 6379
 
-#app:
-#  datasource:
-#    mysql:
-#      driver-class-name: com.mysql.cj.jdbc.Driver
-#      jdbc-url: jdbc:mysql://localhost:3306/sago?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-#      username: root
-#      password: devDB
-#
-#    h2:
-#      jdbc-url: jdbc:h2:mem:mydb
-#      username: sa
-#      password: password
-#      driverClassName: org.h2.Driver
+app:
+  datasource:
+    mysql:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/sago?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      username: root
+      password: devDB
+
+    h2:
+      jdbc-url: jdbc:h2:mem:mydb
+      username: sa
+      password: password
+      driverClassName: org.h2.Driver
 
 ---
 # prod setting
