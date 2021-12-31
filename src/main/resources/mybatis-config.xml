@@ -7,4 +7,7 @@
         <setting name="callSettersOnNulls" value="true"/>
         <setting name="jdbcTypeForNull" value="NULL"/>
     </settings>
+    <typeHandlers>
+        <typeHandler handler="org.apache.ibatis.type.ZonedDateTimeTypeHandler" />
+    </typeHandlers>
 </configuration>
