@@ -63,9 +63,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/isAlreadyUsed").permitAll()
                 .antMatchers("/css/**", "/js/**", "/webjars/**").permitAll()
                 // TODO: Spring Security + JWT 인증 로직 추가
+                .antMatchers("/**").permitAll()
                 .antMatchers("/auctions/**").permitAll()
                 .antMatchers("/chat/**").permitAll()
                 .antMatchers("/ws-stomp/**").permitAll()
+                .antMatchers("/payments/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dhmall.payment.mapper.PaymentMapper">
+    <insert id="insertPayment" parameterType="com.dhmall.payment.dto.PaymentDto">
+        INSERT INTO payments(id, user_id, nickname, product_code, product_name, amount, tax_free_amount, vat_amount, payment_code, created_at, updated_at)
+        VALUES(NULL, #{userId}, #{nickname}, #{productCode}, #{productName}, #{amount}, #{taxFreeAmount}, #{vatAmount}, #{paymentCode}, #{createdAt}, #{updatedAt})
+    </insert>
+</mapper>

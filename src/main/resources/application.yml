@@ -12,6 +12,10 @@ jwt:
 logging:
   config: classpath:log4j2.xml
 
+# toss api secret key
+toss:
+  secret: test_sk_Kma60RZblrq7axkgOaz3wzYWBn14
+
 spring:
   mail:
     host: smtp.gmail.com
@@ -43,6 +47,9 @@ spring:
     host: localhost
     port: 6379
 
+redirect:
+  url: http://localhost:8080/
+
 app:
   datasource:
     mysql:
@@ -68,6 +75,9 @@ spring:
     master:
       host: server.sagogaja.com
       port: 6379
+
+redirect:
+  url: https://sagogaja.com/
 
 app:
   datasource:
