@@ -33,7 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/h2-console/**" ,"/favicon.ico");
+        web.ignoring()
+                .antMatchers("/h2-console/**" ,"/favicon.ico");
     }
 
     @Override
@@ -60,6 +61,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/signUp").permitAll()
                 .antMatchers("/users/verifyEmail").permitAll()
                 .antMatchers("/users/isAlreadyUsed").permitAll()
+                .antMatchers("/css/**", "/js/**", "/webjars/**").permitAll()
+                // TODO: Spring Security + JWT 인증 로직 추가
+                .antMatchers("/auctions/**").permitAll()
+                .antMatchers("/chat/**").permitAll()
+                .antMatchers("/ws-stomp/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
