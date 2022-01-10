@@ -14,7 +14,7 @@
 ![sago application architecture](https://user-images.githubusercontent.com/15176192/147054490-19d0fdf4-1042-429b-94f2-f04d301237a8.jpg)
 
 # ERD 💿
-![sago_database_schema drawio](https://user-images.githubusercontent.com/15176192/147206951-c9fbc362-adff-490a-9afc-d4bfb59f1a74.png)
+![sago_database_schema](https://user-images.githubusercontent.com/15176192/148352123-e8cc778c-0b43-4782-bdf5-2396f334c4ed.png)
 
 # Reporting Issues 👩‍💻
 - 실시간 경매 채팅에서의 채팅 메시지 처리 성능 이슈

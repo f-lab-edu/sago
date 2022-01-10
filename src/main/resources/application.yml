@@ -26,6 +26,10 @@ spring:
             enable: true
     protocol: smtp
 
+  batch:
+    jdbc:
+      initialize-schema: always
+
   lifecycle:
     timeout-per-shutdown-phase: 100s
 
@@ -50,12 +54,6 @@ app:
       jdbc-url: jdbc:mysql://localhost:3306/sago?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
       username: root
       password: devDB
-
-    h2:
-      jdbc-url: jdbc:h2:mem:mydb
-      username: sa
-      password: password
-      driverClassName: org.h2.Driver
 
 ---
 # prod setting
