@@ -173,7 +173,7 @@ public class UserServiceTest {
     void checkDuplicateIdWithInvalidId() {
         // when
         Exception actual = assertThrows(UserAccountException.class, () -> {
-            when(userMapper.findById(anyString())).thenReturn(expected);
+            when(userMapper.findByNickname(anyString())).thenReturn(expected);
             userService.checkDuplicateId(anyString());
         });
 
@@ -191,7 +191,7 @@ public class UserServiceTest {
 
         // when
         Exception actual = assertThrows(UserAccountException.class, () -> {
-            when(userMapper.findById(nickname)).thenReturn(null);
+            when(userMapper.findByNickname(nickname)).thenReturn(null);
             userService.login(nickname, password);
         });
 
@@ -213,7 +213,7 @@ public class UserServiceTest {
 
         // when
         Exception actual = assertThrows(UserAccountException.class, () -> {
-            when(userMapper.findById(nickname)).thenReturn(unVerified);
+            when(userMapper.findByNickname(nickname)).thenReturn(unVerified);
             userService.login(nickname, password);
         });
 
@@ -235,7 +235,7 @@ public class UserServiceTest {
 
         // when
         Exception actual = assertThrows(UserAccountException.class, () -> {
-            when(userMapper.findById(nickname)).thenReturn(unmatchedNickname);
+            when(userMapper.findByNickname(nickname)).thenReturn(unmatchedNickname);
             userService.login(nickname, password);
         });
 
@@ -257,7 +257,7 @@ public class UserServiceTest {
 
         // when
         Exception actual = assertThrows(UserAccountException.class, () -> {
-            when(userMapper.findById(nickname)).thenReturn(unmatchedPasswd);
+            when(userMapper.findByNickname(nickname)).thenReturn(unmatchedPasswd);
             userService.login(nickname, password);
         });
 

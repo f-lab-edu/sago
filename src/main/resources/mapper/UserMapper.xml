@@ -12,7 +12,7 @@
         UPDATE users u SET auth_status = 1 WHERE u.email = #{email}
     </update>
 
-    <select id="findById" parameterType="String" resultType="com.dhmall.user.dto.UserDto">
+    <select id="findByNickname" parameterType="String" resultType="com.dhmall.user.dto.UserDto">
         SELECT * FROM users WHERE nickname = #{nickname}
     </select>
 </mapper>
