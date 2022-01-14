@@ -2,7 +2,7 @@ package com.dhmall.auction.controller;
 
 import com.dhmall.auction.dto.ChatMessageDto;
 import com.dhmall.auction.dto.ChatRoomDto;
-import com.dhmall.auction.pubsub.RedisPublisher;
+import com.dhmall.auction.RedisPublisher;
 import com.dhmall.auction.service.AuctionService;
 import com.dhmall.util.SagoApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,6 @@ public class AuctionController {
     @GetMapping("auctionRoomList")
     @ResponseBody
     public SagoApiResponse<List<ChatRoomDto>> uploadAllAuctionRooms() {
-        // TODO: Spring Batch 작업 추가
         List<ChatRoomDto> availableAuctions = auctionService.findAllAuctionRooms();
         return new SagoApiResponse<>(HttpStatus.OK, availableAuctions);
     }

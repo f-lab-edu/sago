@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dhmall.auction.mapper.AuctionRoomMapper">
+
+    <select id="findAuctionProductsByAuctionStatus" resultType="com.dhmall.auction.dto.ProductDto">
+        SELECT * FROM products WHERE auction_status = 0 ORDER BY id
+    </select>
+
+    <insert id="insertAuctionRoom" parameterType="com.dhmall.auction.dto.ProductDto">
+        INSERT INTO chat_rooms(id, product_code, product_name, description)
+        VALUES(NULL, #{code}, #{name}, #{description})
+    </insert>
+
+    <delete id="deleteAuctionRoom">
+        DELETE FROM chat_rooms
+    </delete>
+
+    <update id="alterAuctionRoomId">
+        ALTER TABLE chat_rooms AUTO_INCREMENT = 1
+    </update>
+
+</mapper>

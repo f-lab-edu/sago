@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dhmall.batch.statistics.SagoStatisticsMapper">
+    <select id="selectCountFromTables" parameterType="java.time.ZonedDateTime" resultType="com.dhmall.batch.statistics.SagoStatisticsDto">
+        SELECT auctions.total_day_auction_count, users.total_day_user_count, payments.total_day_payment_count
+        FROM
+        ( SELECT count(*) total_day_auction_count FROM auctions WHERE created_at = #{createdAt}) auctions,
+        ( SELECT count(*) total_day_user_count FROM users WHERE created_at = #{createdAt}) users,
+        ( SELECT count(*) total_day_payment_count FROM  payments WHERE created_at = #{createdAt}) payments;
+    </select>
+
+    <insert id="insertSagoStatisticsInfo" parameterType="com.dhmall.batch.statistics.SagoStatisticsDto">
+        INSERT INTO sago_data_statistics_day (id, total_day_auction_count, total_day_user_count, total_day_payment_count, created_at)
+        VALUES(NULL, #{totalDayAuctionCount}, #{totalDayUserCount}, #{totalDayPaymentCount}, #{createdAt})
+    </insert>
+</mapper>

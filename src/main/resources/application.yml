@@ -26,9 +26,27 @@ spring:
             enable: true
     protocol: smtp
 
-  batch:
+  # Quartz Scheduler 설정
+  quartz:
     jdbc:
       initialize-schema: always
+    job-store-type: jdbc
+    scheduler-name: Sago_Batch_Scheduler
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceId: AUTO
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            clusterCheckinInterval: 1000
+            isClustered: true
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 3
+            threadsInheritContextClassLoaderOfInitializingThread: true
+    overwrite-existing-jobs: true
 
   lifecycle:
     timeout-per-shutdown-phase: 100s
