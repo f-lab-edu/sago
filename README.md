@@ -17,7 +17,7 @@
 ![sago_database_schema](https://user-images.githubusercontent.com/15176192/148352123-e8cc778c-0b43-4782-bdf5-2396f334c4ed.png)
 
 # Reporting Issues 👩‍💻
-- 실시간 경매 채팅에서의 채팅 메시지 처리 성능 이슈
+- 실시간 경매 채팅에서의 채팅 메시지 처리 성능 이슈(RedditMQ, Kafka 등 메시지 큐잉 기술 도입 검토)
 - DB 장애 대응(Master-Slave)
 
 # Prototype 🏙
