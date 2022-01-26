@@ -6,7 +6,7 @@ pipeline {
             steps {
                 echo 'Building the project with ${env.BUILD_NUMBER}'
                 sh './gradlew clean build'
-                archiveArtifacts 'sago/target/*.jar'
+                archiveArtifacts 'sago/target/*.jar', onlyIfSuccessful: true
             }
         }
 
@@ -22,7 +22,11 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                script {
+                    sh 'ssh -p 8080 root@101.101.161.9'
+                    sh 'cd /sago_docker_container'
+                    sh 'docker pull luok377/sago'
+                }
             }
         }
     }
