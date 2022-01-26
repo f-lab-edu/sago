@@ -6,7 +6,7 @@ pipeline {
             steps {
                 echo 'Building the project with ${env.BUILD_NUMBER}'
                 sh './gradlew clean build'
-                archiveArtifacts 'sago/target/*.jar', onlyIfSuccessful: true
+                archiveArtifacts 'sago/target/*.jar' onlyIfSuccessful: true
             }
         }
 
