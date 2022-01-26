@@ -13,7 +13,7 @@ pipeline {
         stage('Docker Build & Update hub repository') {
             steps {
                 script {
-                    sh 'docker build -t luok377/sago build/.'
+                    sh 'docker build -t luok377/sago .'
                     sh 'docker push luok377/sago'
                     sh 'docker rmi luok377/sago'
                 }
