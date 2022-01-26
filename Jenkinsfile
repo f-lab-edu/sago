@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker build -t luok377/sago .'
-                    sh 'docker login'
+                    sh 'docker login -u luok377 -p ${{ secrets.SAGO_DOCKER_TOKEN }}'
                     sh 'docker push luok377/sago'
                     sh 'docker rmi luok377/sago'
                 }
