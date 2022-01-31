@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker build -t luok377/sago .'
-                    sh 'cat ~/docker_token.txt | docker login --username luok377 --password-stdin'
+                    sh 'docker login --username ${DOCKER_USERNAME} --password-stdin ${DOCKER_PASSWORD}'
                     sh 'docker push luok377/sago'
                     sh 'docker rmi luok377/sago'
                 }
