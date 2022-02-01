@@ -9,15 +9,14 @@ pipeline {
             }
         }
 
-        stage("Docker build image") {
-            app = docker.build("luok377/sago")
-        }
-
-        stage('Docker push image') {
+        stage('Docker build & push image') {
             steps {
-                docker.withRegistry('https://registry.hub.docker.com', 'docker-account') {
-                    app.push("${env.BUILD_NUMBER}")
-                    app.push("latest")
+                script {
+                    sh 'docker build -t luok377/sago .'
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-account') {
+                       sh "docker push luok377/sago"
+                    }
+                    sh 'docker rmi luok377/sago'
                 }
             }
         }
