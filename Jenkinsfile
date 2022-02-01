@@ -34,10 +34,16 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sh 'ssh -t -t -o StrictHostKeyChecking=no -p 8080 101.101.161.9'
-                    sh 'cd /sago_docker_container'
-                    sh 'docker rmi luok377/sago'
-                    sh 'docker pull luok377/sago'
+                    def remote = [:]
+                    remote.name = 'sago_webserver1'
+                    remote.host = '101.101.161.9'
+                    remote.user = '${SSH_SERVER_USERNAME}'
+                    remote.port = 8080
+                    remote.password = '${SSH_SERVER_PASSWORD}'
+                    remote.allowAnyHosts = true
+                    sshCommand remote: remote, command: 'cd /sago_docker_container'
+                    sshCommand remote: remote, command: 'docker rmi luok377/sago'
+                    sshCommand remote: remote, command: 'docker pull luok377/sago'
                 }
             }
         }
