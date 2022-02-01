@@ -4,20 +4,20 @@ pipeline {
     stages {
         stage('Build & Test') {
             steps {
-                echo 'Building the project with ${env.BUILD_NUMBER}'
                 sh './gradlew clean build'
                 archiveArtifacts 'build/libs/*.jar'
             }
         }
 
-        stage('Docker Build & Update hub repository') {
+        stage("Docker build image") {
+            app = docker.build("luok377/sago")
+        }
+
+        stage('Docker push image') {
             steps {
-                script {
-                    sh 'docker build -t luok377/sago .'
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-account') {
-                        bat "docker push luok377/sago"
-                    }
-                    sh 'docker rmi luok377/sago'
+                docker.withRegistry('https://registry.hub.docker.com', 'docker-account') {
+                    app.push("${env.BUILD_NUMBER}")
+                    app.push("latest")
                 }
             }
         }
