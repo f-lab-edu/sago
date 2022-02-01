@@ -1,3 +1,9 @@
+def remote = [:]
+remote.name = 'sago_web_server'
+remote.host = '101.101.161.9'
+remote.port = 8080
+remote.allowAnyHosts = true
+
 pipeline {
     agent any
 
@@ -31,19 +37,17 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                script {
-                    def remote = [:]
-                    remote.name = 'sago_webserver1'
-                    remote.host = '101.101.161.9'
-                    remote.user = '${SSH_SERVER_USERNAME}'
-                    remote.port = 8080
-                    remote.password = '${SSH_SERVER_PASSWORD}'
-                    remote.allowAnyHosts = true
-                    sshCommand remote: remote, command: 'sudo cd /sago_docker_container'
-                    sshCommand remote: remote, command: 'sudo docker rmi luok377/sago'
-                    sshCommand remote: remote, command: 'sudo docker pull luok377/sago'
+        withCredentials([usernamePassword(credentialsId: 'ssh_key', passwordVariable: 'password', usernameVariable: 'userName')]) {
+            remote.user = userName
+            remote.password = password
+
+            stage("Deploy") {
+                steps{
+                    script {
+                        sshCommand remote: remote, command: 'cd /sago_docker_container'
+                        sshCommand remote: remote, command: 'docker rmi luok377/sago'
+                        sshCommand remote: remote, command: 'docker pull luok377/sago'
+                    }
                 }
             }
         }
