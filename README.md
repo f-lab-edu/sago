@@ -11,7 +11,7 @@
 - Business Rule 및 기술 이슈 해결사항은 Wiki 페이지를 참고해주세요.
 
 # Architecture 🏛
-![sago application architecture](https://user-images.githubusercontent.com/15176192/147054490-19d0fdf4-1042-429b-94f2-f04d301237a8.jpg)
+![sago application architecture drawio](https://user-images.githubusercontent.com/15176192/151936706-1787b93b-8ea5-4a20-9fc0-c8ef6e197a91.png)
 
 # ERD 💿
 ![sago_database_schema drawio](https://user-images.githubusercontent.com/15176192/149649387-dfda335a-75e7-4be1-9fb7-b4acfa867ab7.png)
