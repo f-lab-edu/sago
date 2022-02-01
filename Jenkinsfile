@@ -34,7 +34,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sh 'ssh -t -t -p 8080 root@101.101.161.9'
+                    sh 'ssh -t -t -o StrictHostKeyChecking=no -p 8080 root@101.101.161.9'
                     sh 'cd /sago_docker_container'
                     sh 'docker rmi luok377/sago'
                     sh 'docker pull luok377/sago'
