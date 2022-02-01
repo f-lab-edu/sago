@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        app = ''
+    }
+
     stages {
         stage('Build & Test') {
             steps {
@@ -9,14 +13,21 @@ pipeline {
             }
         }
 
-        stage('Docker build & push image') {
+        stage('Docker build image') {
             steps {
                 script {
-                    sh 'docker build -t luok377/sago .'
+                    app = docker.build('luok377/sago', '.')
+                }
+            }
+        }
+
+        stage('Docker push image') {
+            steps {
+                script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-account') {
-                       sh "docker push luok377/sago"
+                       app.push('${env.BUILD_NUMBER}')
+                       app.push('latest')
                     }
-                    sh 'docker rmi luok377/sago'
                 }
             }
         }
