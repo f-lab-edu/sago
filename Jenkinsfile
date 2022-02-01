@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-account') {
-                       app.push('${env.BUILD_NUMBER}')
+                       app.push('luok377/sago')
                     }
                 }
             }
