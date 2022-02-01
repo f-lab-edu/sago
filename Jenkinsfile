@@ -14,8 +14,9 @@ pipeline {
             steps {
                 script {
                     sh 'docker build -t luok377/sago .'
-//                     sh 'docker login --username ${DOCKER_USERNAME} --password-stdin ${DOCKER_PASSWORD}'
-                    sh 'docker push luok377/sago'
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-account') {
+                        bat "docker push luok377/sago"
+                    }
                     sh 'docker rmi luok377/sago'
                 }
             }
