@@ -37,13 +37,13 @@ pipeline {
             }
         }
 
-        withCredentials([usernamePassword(credentialsId: 'ssh_key', passwordVariable: 'password', usernameVariable: 'userName')]) {
-            remote.user = userName
-            remote.password = password
+        stage("Deploy") {
+            steps{
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'ssh_key', passwordVariable: 'password', usernameVariable: 'userName')]) {
+                        remote.user = userName
+                        remote.password = password
 
-            stage("Deploy") {
-                steps{
-                    script {
                         sshCommand remote: remote, command: 'cd /sago_docker_container'
                         sshCommand remote: remote, command: 'docker rmi luok377/sago'
                         sshCommand remote: remote, command: 'docker pull luok377/sago'
