@@ -45,7 +45,6 @@ pipeline {
                         remote.password = password
 
                         sshCommand remote: remote, command: 'cd /sago_docker_container'
-                        sshCommand remote: remote, command: 'docker rmi luok377/sago'
                         sshCommand remote: remote, command: 'docker pull luok377/sago'
                     }
                 }
