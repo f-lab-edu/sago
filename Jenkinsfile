@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-account') {
-                       app.push('luok377/sago')
+                       app.push('latest')
                     }
                 }
             }
