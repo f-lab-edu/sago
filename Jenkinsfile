@@ -41,9 +41,9 @@ pipeline {
                     remote.port = 8080
                     remote.password = '${SSH_SERVER_PASSWORD}'
                     remote.allowAnyHosts = true
-                    sshCommand remote: remote, command: 'cd /sago_docker_container'
-                    sshCommand remote: remote, command: 'docker rmi luok377/sago'
-                    sshCommand remote: remote, command: 'docker pull luok377/sago'
+                    sshCommand remote: remote, command: 'sudo cd /sago_docker_container'
+                    sshCommand remote: remote, command: 'sudo docker rmi luok377/sago'
+                    sshCommand remote: remote, command: 'sudo docker pull luok377/sago'
                 }
             }
         }
