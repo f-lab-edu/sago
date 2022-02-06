@@ -9,9 +9,6 @@ jwt:
   secret: ZG5JWFRBRzB2bXFzam5OX0lXVUxGTk1xcW40RFZHZEtMQUFmQ0dEVlhjVkpLOHdBSlV4bXRsbzNTd0MzZWlDaQo=
   token-validity-in-seconds: 1800
 
-logging:
-  config: classpath:log4j2.xml
-
 # toss api secret key
 toss:
   secret: test_sk_Kma60RZblrq7axkgOaz3wzYWBn14
