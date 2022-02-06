@@ -26,7 +26,7 @@ public class EmailService {
     private final Configuration freeMarkerConfig;
 
     @Value("${spring.mail.username}")
-    private String from;
+    private final String from;
 
     @SneakyThrows
     @Async

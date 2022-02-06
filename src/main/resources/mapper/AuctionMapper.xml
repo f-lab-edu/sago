@@ -21,11 +21,11 @@
         SELECT * FROM chat_rooms
     </select>
 
-    <select id="selectUserById" parameterType="BigInteger" resultType="com.dhmall.user.dto.UserDto">
+    <select id="findUserById" parameterType="BigInteger" resultType="com.dhmall.user.dto.UserDto">
         SELECT * FROM users where id = #{id}
     </select>
 
-    <select id="selectProductByCode" parameterType="String" resultType="com.dhmall.auction.dto.ProductDto">
+    <select id="findProductByCode" parameterType="String" resultType="com.dhmall.auction.dto.ProductDto">
         SELECT * FROM products where product_code = #{productCode}
     </select>
 

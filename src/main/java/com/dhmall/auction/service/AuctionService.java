@@ -69,11 +69,11 @@ public class AuctionService {
         return topics.get(roomId);
     }
 
-    public UserDto infoAuctionWinner(BigInteger id) {
-        return auctionMapper.selectUserById(id);
+    public UserDto getAuctionWinner(BigInteger id) {
+        return auctionMapper.findUserById(id);
     }
 
-    public ProductDto infoAuctionProduct(String productCode) {
-        return auctionMapper.selectProductByCode(productCode);
+    public ProductDto getAuctionProduct(String productCode) {
+        return auctionMapper.findProductByCode(productCode);
     }
 }

@@ -22,9 +22,9 @@ public class PaymentController {
 
     private final PaymentService paymentService;
     @Value("${redirect.url}")
-    private String serverUrl;
+    private final String serverUrl;
 
-    @GetMapping("")
+    @GetMapping("request")
     public SagoApiResponse<AuctionDto> requestPayment(@RequestParam String chatRoomId) {
         // TODO: Auction 채팅방에서 Redis에다가 userId, productCode, amount 저장하기
         AuctionDto auctionResult = paymentService.confirmAuction(chatRoomId);

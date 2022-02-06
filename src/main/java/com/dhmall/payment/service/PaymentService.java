@@ -34,7 +34,7 @@ public class PaymentService {
     private final ObjectMapper objectMapper;
 
     @Value("${toss.secret}")
-    private String TOSS_SECRET_KEY;
+    private final String TOSS_SECRET_KEY;
 
     public TossPayDto approvePayment(String paymentKey, BigDecimal amount, String orderId) throws Exception {
         HttpHeaders headers = new HttpHeaders();
@@ -81,8 +81,8 @@ public class PaymentService {
         // TODO: Auction 채팅방에서 Redis에다가 userId, productCode, amount 저장하기
         AuctionWinnerDto winner = (AuctionWinnerDto) redisTemplate.opsForValue().get(chatRoomId);
 
-        UserDto user = auctionService.infoAuctionWinner(new BigInteger(winner.getUserId()));
-        ProductDto product = auctionService.infoAuctionProduct(winner.getProductCode());
+        UserDto user = auctionService.getAuctionWinner(new BigInteger(winner.getUserId()));
+        ProductDto product = auctionService.getAuctionProduct(winner.getProductCode());
 
         AuctionDto auctionInfo = new AuctionDto();
         auctionInfo.setUserId(user.getId());

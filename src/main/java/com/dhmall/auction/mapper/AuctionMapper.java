@@ -13,7 +13,7 @@ import java.math.BigInteger;
 public interface AuctionMapper {
     void insertChatMessage(ChatMessageDto chatMessage);
 
-    UserDto selectUserById(BigInteger id);
+    UserDto findUserById(BigInteger id);
 
-    ProductDto selectProductByCode(String productCode);
+    ProductDto findProductByCode(String productCode);
 }
