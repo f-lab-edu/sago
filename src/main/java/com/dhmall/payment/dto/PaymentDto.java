@@ -1,34 +1,34 @@
 package com.dhmall.payment.dto;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.ZonedDateTime;
 
 @Getter
-@Setter
+@RequiredArgsConstructor
 public class PaymentDto {
-    private BigInteger id;
+    private final BigInteger id;
 
-    private BigInteger userId;
+    private final BigInteger userId;
 
-    private String nickname;
+    private final String nickname;
 
-    private String productCode;
+    private final String productCode;
 
-    private String productName;
+    private final String productName;
 
-    private BigDecimal amount;
+    private final BigDecimal amount;
 
-    private BigDecimal taxFreeAmount;
+    private final BigDecimal taxFreeAmount;
 
-    private BigDecimal vatAmount;
+    private final BigDecimal vatAmount;
 
-    private String paymentCode;
+    private final String paymentCode;
 
-    private ZonedDateTime createdAt;
+    private final ZonedDateTime createdAt;
 
-    private ZonedDateTime updatedAt;
+    private final ZonedDateTime updatedAt;
 }

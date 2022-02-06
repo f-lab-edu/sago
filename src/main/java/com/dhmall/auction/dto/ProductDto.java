@@ -2,31 +2,29 @@ package com.dhmall.auction.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigInteger;
 
 @Getter
-@Setter
 @RequiredArgsConstructor
 public class ProductDto {
 
-    private BigInteger id;
+    private final BigInteger id;
 
-    private String code;
+    private final String code;
 
-    private String name;
+    private final String name;
 
-    private String category;
+    private final String category;
 
-    private String owner;
+    private final String owner;
 
-    private int auctionStatus;
+    private final int auctionStatus;
 
-    private String description;
+    private final String description;
 
-    private String createdAt;
+    private final String createdAt;
 
-    private String updatedAt;
+    private final String updatedAt;
 
 }
