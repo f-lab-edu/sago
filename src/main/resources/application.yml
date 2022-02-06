@@ -6,7 +6,7 @@ server:
 # secret: base64 encoding value
 jwt:
   header: Authorization
-  secret: ZG5JWFRBRzB2bXFzam5OX0lXVUxGTk1xcW40RFZHZEtMQUFmQ0dEVlhjVkpLOHdBSlV4bXRsbzNTd0MzZWlDaQo=
+  secret: ${{ secrets.SAGO_USER_JWT_SECRET }}
   token-validity-in-seconds: 1800
 
 # toss api secret key
@@ -17,8 +17,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: teamsagocorp@gmail.com
-    password: cragflqpsvrmauyo
+    username: ${{ secrets.SAGO_USER_EMAIL_ACCOUNT }}
+    password: ${{ secrets.SAGO_USER_EMAIL_PASSWORD }}
     properties:
       mail:
         smtp:
@@ -26,6 +26,10 @@ spring:
           starttls:
             enable: true
     protocol: smtp
+
+  batch:
+    jdbc:
+      initialize-schema: always
 
   lifecycle:
     timeout-per-shutdown-phase: 100s
@@ -41,7 +45,7 @@ spring:
       on-profile: dev
 
   redis:
-    host: localhost
+    host: host.docker.internal
     port: 6379
 
 redirect:
@@ -51,15 +55,9 @@ app:
   datasource:
     mysql:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://localhost:3306/sago?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      jdbc-url: jdbc:mysql://host.docker.internal:3306/sago?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
       username: root
       password: devDB
-
-    h2:
-      jdbc-url: jdbc:h2:mem:mydb
-      username: sa
-      password: password
-      driverClassName: org.h2.Driver
 
 ---
 # prod setting

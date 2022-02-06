@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DataSourceTemplateGenerator implements DataSourceTemplate{
+public class CacheDataSourceGenerator implements DataSource {
 
     private final RedisConfig redisConfig;
 
     @Override
-    public RedisTemplate redis() {
+    public RedisTemplate cacheDataSource() {
         return redisConfig.redisTemplate(redisConfig.redisRepositoryFactory());
     }
 }
