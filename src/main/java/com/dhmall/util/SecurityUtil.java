@@ -6,6 +6,9 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 @Slf4j
 public class SecurityUtil {
 
+    // 인스턴스화 방지
+    private SecurityUtil() {}
+
     /**
      * Hash Algorithm: BCrypt
      * @param password
