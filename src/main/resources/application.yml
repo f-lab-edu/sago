@@ -6,7 +6,7 @@ server:
 # secret: base64 encoding value
 jwt:
   header: Authorization
-  secret: ${{ secrets.SAGO_USER_JWT_SECRET }}
+  secret: ZG5JWFRBRzB2bXFzam5OX0lXVUxGTk1xcW40RFZHZEtMQUFmQ0dEVlhjVkpLOHdBSlV4bXRsbzNTd0MzZWlDaQo
   token-validity-in-seconds: 1800
 
 logging:
@@ -16,8 +16,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${{ secrets.SAGO_USER_EMAIL_ACCOUNT }}
-    password: ${{ secrets.SAGO_USER_EMAIL_PASSWORD }}
+    username: teamsagocorp@gmail.com
+    password: cragflqpsvrmauyo
     properties:
       mail:
         smtp:
