@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -35,10 +36,11 @@ public class UserControllerTest {
     private MockMvc mockMvc;
 
     @ClassRule
-    private static final MySQLContainer MY_SQL_CONTAINER = new MySQLContainer("mysql:latest")
+    private static final GenericContainer MY_SQL_CONTAINER = new MySQLContainer("mysql:latest")
             .withDatabaseName("sago")
             .withUsername("test")
-            .withPassword("test");
+            .withPassword("test")
+            .withExposedPorts(3306);
 
     @Test
     void postLoginURI_thenReturnHttpOk() throws Exception {
