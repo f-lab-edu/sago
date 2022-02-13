@@ -37,7 +37,6 @@ public class UserControllerTest {
 
     @ClassRule
     private static final GenericContainer MY_SQL_CONTAINER = new MySQLContainer("mysql:latest")
-            .withDatabaseName("sago")
             .withUsername("test")
             .withPassword("test")
             .withExposedPorts(3306);

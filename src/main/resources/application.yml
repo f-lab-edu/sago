@@ -89,6 +89,6 @@ spring:
 app:
   datasource:
     mysql:
-      jdbc-url: jdbc:tc:mysql:latest:///sago?TC_INITSCRIPT=file:src/test/resources/test_setting.sql
+      jdbc-url: jdbc:tc:mysql:latest:///test?TC_INITSCRIPT=file:src/test/resources/test_setting.sql
       username: test
       password: test
