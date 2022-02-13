@@ -1,4 +1,4 @@
-# common(dev, prod)
+# common(dev, prod, test)
 server:
   port: 8080
   shutdown: graceful
@@ -16,8 +16,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: teamsagocorp@gmail.com
-    password: cragflqpsvrmauyo
+    username: teamsagocorp
+    password: ffjoswlgpowdqeyd
     properties:
       mail:
         smtp:
@@ -74,3 +74,21 @@ app:
       jdbc-url: jdbc:mysql://server.sagogaja.com:3306/sago?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
       username: root
       password:
+
+---
+# test setting
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  redis:
+    host: test
+    port: 6379
+
+app:
+  datasource:
+    mysql:
+      jdbc-url: jdbc:tc:mysql:latest:///sago?TC_INITSCRIPT=file:src/test/resources/test_setting.sql
+      username: test
+      password: test

@@ -4,34 +4,41 @@ import com.dhmall.user.dto.LoginDto;
 import com.dhmall.user.dto.UserDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.ClassRule;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
+@ActiveProfiles("test")
+@Testcontainers
+@AutoConfigureMockMvc
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserControllerTest {
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
 
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
     private MockMvc mockMvc;
 
-    @BeforeEach
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
-    }
+    @ClassRule
+    private static final MySQLContainer MY_SQL_CONTAINER = new MySQLContainer("mysql:latest")
+            .withDatabaseName("sago")
+            .withUsername("test")
+            .withPassword("test");
 
     @Test
     void postLoginURI_thenReturnHttpOk() throws Exception {
@@ -39,6 +46,7 @@ public class UserControllerTest {
         validUser.setNickname("sagotest18");
         validUser.setPassword("test18");
         String content = objectMapper.writeValueAsString(validUser);
+
         this.mockMvc.perform(post("/users/login")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -47,6 +55,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Transactional
     void postSignUpURI_thenReturnResponseEntity() throws Exception {
         UserDto validUser = new UserDto();
 
