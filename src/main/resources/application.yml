@@ -91,6 +91,9 @@ spring:
       jdbc-url: jdbc:tc:mysql:latest:///test?TC_INITSCRIPT=file:src/test/resources/test_setting.sql
       username: test
       password: test
+    url: jdbc:tc:mysql:latest:///test?TC_INITSCRIPT=file:src/test/resources/test_setting.sql
+    username: test
+    password: test
 
 app:
   datasource:
