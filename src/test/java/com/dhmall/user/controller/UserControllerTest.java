@@ -87,7 +87,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void getverifyEmailURI_thenReturnResponseEntity() throws Exception {
+    void getVerifyEmailURI_thenReturnResponseEntity() throws Exception {
         this.mockMvc.perform(get("/users/verifyEmail")
                         .param("email", "melllamodahye@gmail.com"))
                 .andExpect(jsonPath("$.responseCode", Matchers.is("OK")))
@@ -95,7 +95,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void getcheckDuplicateIdURI_thenReturnResponseEntity() throws Exception {
+    void getCheckDuplicateIdURI_thenReturnResponseEntity() throws Exception {
         this.mockMvc.perform(get("/users/isAlreadyUsed")
                         .param("nickname", "pranne1225"))
                 .andExpect(jsonPath("$.responseCode", Matchers.is("OK")))
