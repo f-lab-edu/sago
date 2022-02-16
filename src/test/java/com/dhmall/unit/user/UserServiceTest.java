@@ -1,4 +1,4 @@
-package com.dhmall.user;
+package com.dhmall.unit.user;
 
 import com.dhmall.exception.UserAccountException;
 import com.dhmall.user.dto.UserDto;

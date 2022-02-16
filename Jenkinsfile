@@ -12,10 +12,22 @@ pipeline {
     }
 
     stages {
-        stage('Build & Test') {
+        stage('Build') {
             steps {
-                sh './gradlew clean build'
+                sh './gradlew clean build -x test'
                 archiveArtifacts 'build/libs/*.jar'
+            }
+        }
+
+        stage('Unit Test') {
+            steps {
+                sh './gradlew test'
+            }
+        }
+
+        stage('Integration Test') {
+            steps {
+                sh './gradlew integrationTest'
             }
         }
 
