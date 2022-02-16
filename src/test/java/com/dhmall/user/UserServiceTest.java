@@ -1,4 +1,4 @@
-package com.dhmall.user.service;
+package com.dhmall.user;
 
 import com.dhmall.exception.UserAccountException;
 import com.dhmall.user.dto.UserDto;
@@ -6,6 +6,8 @@ import com.dhmall.user.mapper.UserMapper;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.dhmall.user.service.EmailService;
+import com.dhmall.user.service.UserService;
 import com.dhmall.util.SecurityUtil;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

@@ -1,4 +1,4 @@
-package com.dhmall.user.controller;
+package com.dhmall.user.integration;
 
 import com.dhmall.user.dto.LoginDto;
 import com.dhmall.user.dto.UserDto;
