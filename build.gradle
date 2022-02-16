@@ -15,17 +15,22 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-}
-
-if (hasProperty('buildScan')) {
-    buildScan {
-        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-        termsOfServiceAgree = 'yes'
-    }
+    integrationTestImplementation.extendsFrom implementation
+    integrationTestImplementation.extendsFrom testImplementation
+    integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
 jar {
     enabled = false
+}
+
+sourceSets {
+    integrationTest {
+        java.srcDir "$projectDir/src/test/com/dhmall/integration/java"
+        resources.srcDir "$projectDir/src/test/resources"
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
 }
 
 repositories {
@@ -75,4 +80,18 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+task integrationTest(type: Test) {
+    description = 'Runs integration tests.'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    useJUnitPlatform()
+    shouldRunAfter test
+}
+
+check {
+    dependsOn integrationTest
 }

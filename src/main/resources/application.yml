@@ -86,18 +86,9 @@ spring:
     host: test
     port: 6379
 
-  datasource:
-    hikari:
-      jdbc-url: jdbc:tc:mysql:latest:///test?TC_INITSCRIPT=file:src/test/resources/test_setting.sql
-      username: test
-      password: test
-    url: jdbc:tc:mysql:latest:///test?TC_INITSCRIPT=file:src/test/resources/test_setting.sql
-    username: test
-    password: test
-
 app:
   datasource:
     mysql:
-      jdbc-url: jdbc:tc:mysql:latest:///test?TC_INITSCRIPT=file:src/test/resources/test_setting.sql
+      jdbc-url: jdbc:tc:mysql:latest:///test?TC_INITSCRIPT=file:src/test/resources/integration_test_setting.sql
       username: test
       password: test
