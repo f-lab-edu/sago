@@ -10,10 +10,6 @@ import org.springframework.data.annotation.Id;
 @RequiredArgsConstructor
 public class ChatMessageDto {
 
-    public enum MessageType {
-        ENTER, TALK, BID
-    }
-
     private MessageType type;
 
     @Id

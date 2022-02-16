@@ -1,4 +1,4 @@
-package com.dhmall.user.service;
+package com.dhmall.unit.user;
 
 import com.dhmall.exception.UserAccountException;
 import com.dhmall.user.dto.UserDto;
@@ -6,6 +6,8 @@ import com.dhmall.user.mapper.UserMapper;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.dhmall.user.service.EmailService;
+import com.dhmall.user.service.UserService;
 import com.dhmall.util.SecurityUtil;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -173,7 +175,7 @@ public class UserServiceTest {
     void checkDuplicateIdWithInvalidId() {
         // when
         Exception actual = assertThrows(UserAccountException.class, () -> {
-            when(userMapper.findById(anyString())).thenReturn(expected);
+            when(userMapper.findByNickname(anyString())).thenReturn(expected);
             userService.checkDuplicateId(anyString());
         });
 
@@ -191,7 +193,7 @@ public class UserServiceTest {
 
         // when
         Exception actual = assertThrows(UserAccountException.class, () -> {
-            when(userMapper.findById(nickname)).thenReturn(null);
+            when(userMapper.findByNickname(nickname)).thenReturn(null);
             userService.login(nickname, password);
         });
 
@@ -213,7 +215,7 @@ public class UserServiceTest {
 
         // when
         Exception actual = assertThrows(UserAccountException.class, () -> {
-            when(userMapper.findById(nickname)).thenReturn(unVerified);
+            when(userMapper.findByNickname(nickname)).thenReturn(unVerified);
             userService.login(nickname, password);
         });
 
@@ -235,7 +237,7 @@ public class UserServiceTest {
 
         // when
         Exception actual = assertThrows(UserAccountException.class, () -> {
-            when(userMapper.findById(nickname)).thenReturn(unmatchedNickname);
+            when(userMapper.findByNickname(nickname)).thenReturn(unmatchedNickname);
             userService.login(nickname, password);
         });
 
@@ -257,7 +259,7 @@ public class UserServiceTest {
 
         // when
         Exception actual = assertThrows(UserAccountException.class, () -> {
-            when(userMapper.findById(nickname)).thenReturn(unmatchedPasswd);
+            when(userMapper.findByNickname(nickname)).thenReturn(unmatchedPasswd);
             userService.login(nickname, password);
         });
 
