@@ -15,10 +15,28 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    integrationTestImplementation.extendsFrom implementation
+    integrationTestImplementation.extendsFrom testImplementation
+    integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
 jar {
     enabled = false
+}
+
+test {
+    filter {
+        includeTestsMatching "*.unit.*"
+    }
+}
+
+sourceSets {
+    integrationTest {
+        java.srcDir "$projectDir/src/test/com/dhmall/integration/java"
+        resources.srcDir "$projectDir/src/test/resources"
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
 }
 
 repositories {
@@ -54,7 +72,6 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java:8.0.22'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'junit:junit:4.13.1'
     testImplementation 'org.powermock:powermock-module-junit4:2.0.9'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
@@ -62,8 +79,25 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mockito:mockito-inline'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation "org.testcontainers:testcontainers:1.16.3"
+    testImplementation "org.testcontainers:junit-jupiter:1.16.3"
+    testImplementation "org.testcontainers:mysql:1.16.3"
 }
 
 test {
     useJUnitPlatform()
+}
+
+task integrationTest(type: Test) {
+    description = 'Runs integration tests.'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    useJUnitPlatform()
+    shouldRunAfter test
+}
+
+check {
+    dependsOn integrationTest
 }
