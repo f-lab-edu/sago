@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CacheDataSourceGenerator implements DataSource {
+public class CacheDataSourceAdaptor implements DataSource {
 
     private final RedisConfig redisConfig;
 
