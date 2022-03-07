@@ -9,8 +9,9 @@ jwt:
   secret: ZG5JWFRBRzB2bXFzam5OX0lXVUxGTk1xcW40RFZHZEtMQUFmQ0dEVlhjVkpLOHdBSlV4bXRsbzNTd0MzZWlDaQo
   token-validity-in-seconds: 1800
 
-logging:
-  config: classpath:log4j2.xml
+# toss api secret key
+toss:
+  secret: test_sk_Kma60RZblrq7axkgOaz3wzYWBn14
 
 spring:
   mail:
@@ -47,6 +48,9 @@ spring:
     host: localhost
     port: 6379
 
+redirect:
+  url: http://localhost:8080/
+
 app:
   datasource:
     mysql:
@@ -66,6 +70,9 @@ spring:
     master:
       host: server.sagogaja.com
       port: 6379
+
+redirect:
+  url: https://sagogaja.com/
 
 app:
   datasource:

@@ -3,9 +3,7 @@ package com.dhmall.user.service;
 import com.dhmall.user.dto.MailDto;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -22,22 +20,19 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-@Getter
-@Setter
 public class EmailService {
 
     private final JavaMailSender mailSender;
     private final Configuration freeMarkerConfig;
 
     @Value("${spring.mail.username}")
-    private String from;
-    private MimeMessageHelper mimeMessageHelper;
+    private final String from;
 
     @SneakyThrows
     @Async
     public void sendEmail(MailDto email) {
         MimeMessage message = mailSender.createMimeMessage();
-        mimeMessageHelper = new MimeMessageHelper(message, "utf-8");
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, "utf-8");
 
         mimeMessageHelper.setFrom(from);
         mimeMessageHelper.setTo(email.getEmail());

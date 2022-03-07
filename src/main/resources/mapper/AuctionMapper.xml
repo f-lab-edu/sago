@@ -13,11 +13,20 @@
         VALUES(NULL, #{productCode}, #{productName})
     </insert>
 
-<!--    <select id="selectAuctionProduct" parameterType="int" resultType="com.dhmall.auction.dto.ProductDto">-->
-<!--        SELECT * FROM products WHERE #{auctionStatus} = 0 ORDER BY id LIMIT #{_skiprows}, #{_pagesize}-->
-<!--    </select>-->
+    <select id="selectAuctionProduct" parameterType="int" resultType="com.dhmall.auction.dto.ProductDto">
+        SELECT * FROM products WHERE #{auctionStatus} = 0 ORDER BY id LIMIT #{_skiprows}, #{_pagesize}
+    </select>
 
-<!--    <select id="selectAllChatRooms" resultType="com.dhmall.auction.dto.ChatRoomDto">-->
-<!--        SELECT * FROM chat_rooms-->
-<!--    </select>-->
+    <select id="selectAllChatRooms" resultType="com.dhmall.auction.dto.ChatRoomDto">
+        SELECT * FROM chat_rooms
+    </select>
+
+    <select id="findUserById" parameterType="BigInteger" resultType="com.dhmall.user.dto.UserDto">
+        SELECT * FROM users where id = #{id}
+    </select>
+
+    <select id="findProductByCode" parameterType="String" resultType="com.dhmall.auction.dto.ProductDto">
+        SELECT * FROM products where product_code = #{productCode}
+    </select>
+
 </mapper>

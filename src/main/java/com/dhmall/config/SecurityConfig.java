@@ -66,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auctions/**").permitAll()
                 .antMatchers("/chat/**").permitAll()
                 .antMatchers("/ws-stomp/**").permitAll()
+                .antMatchers("/payments/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

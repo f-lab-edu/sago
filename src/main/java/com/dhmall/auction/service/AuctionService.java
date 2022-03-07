@@ -2,8 +2,10 @@ package com.dhmall.auction.service;
 
 import com.dhmall.auction.dto.ChatMessageDto;
 import com.dhmall.auction.dto.ChatRoomDto;
+import com.dhmall.auction.dto.ProductDto;
 import com.dhmall.auction.mapper.AuctionMapper;
 import com.dhmall.auction.pubsub.RedisSubscriber;
+import com.dhmall.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.math.BigInteger;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -64,5 +67,13 @@ public class AuctionService {
 
     public ChannelTopic getTopic(String roomId) {
         return topics.get(roomId);
+    }
+
+    public UserDto getAuctionWinner(BigInteger id) {
+        return auctionMapper.findUserById(id);
+    }
+
+    public ProductDto getAuctionProduct(String productCode) {
+        return auctionMapper.findProductByCode(productCode);
     }
 }
