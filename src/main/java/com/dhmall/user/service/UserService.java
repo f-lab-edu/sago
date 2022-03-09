@@ -51,14 +51,14 @@ public class UserService {
     }
 
     public String checkDuplicateId(String nickname) {
-        UserDto user = userMapper.findById(nickname);
+        UserDto user = userMapper.findByNickname(nickname);
         if(user != null) throw new UserAccountException(HttpStatus.CONFLICT, ErrorCode.CLIENT_ALREADY_EXISTED_ACCOUNT_ERROR, "이미 등록된 아이디입니다.");
         return nickname;
     }
 
     public void login(String nickname, String password) {
         loginUser = new LoginDto();
-        UserDto userFromDB = this.userMapper.findById(nickname);
+        UserDto userFromDB = this.userMapper.findByNickname(nickname);
         boolean isPasswdMatched = false;
         if (userFromDB != null) isPasswdMatched = SecurityUtil.verifyEncryption(password, userFromDB.getPassword());
 
@@ -89,7 +89,7 @@ public class UserService {
     }
 
     public UserDto info(String nickname) {
-        return userMapper.findById(nickname);
+        return userMapper.findByNickname(nickname);
     }
 
 }

@@ -8,7 +8,16 @@
         VALUES(NULL, #{roomId}, #{userId}, #{nickname}, #{message}, #{createdAt}, #{updatedAt})
     </insert>
 
-    <select id="selectAllChatRooms" resultType="com.dhmall.auction.dto.ChatRoomDto">
-        SELECT * FROM chat_rooms
-    </select>
+    <insert id="insertChatRoom" parameterType="com.dhmall.auction.dto.ChatRoomDto">
+        INSERT INTO chat_messages(id, product_code, product_name)
+        VALUES(NULL, #{productCode}, #{productName})
+    </insert>
+
+<!--    <select id="selectAuctionProduct" parameterType="int" resultType="com.dhmall.auction.dto.ProductDto">-->
+<!--        SELECT * FROM products WHERE #{auctionStatus} = 0 ORDER BY id LIMIT #{_skiprows}, #{_pagesize}-->
+<!--    </select>-->
+
+<!--    <select id="selectAllChatRooms" resultType="com.dhmall.auction.dto.ChatRoomDto">-->
+<!--        SELECT * FROM chat_rooms-->
+<!--    </select>-->
 </mapper>

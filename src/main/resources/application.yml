@@ -1,4 +1,4 @@
-# common(dev, prod)
+# common(dev, prod, test)
 server:
   port: 8080
   shutdown: graceful
@@ -6,7 +6,7 @@ server:
 # secret: base64 encoding value
 jwt:
   header: Authorization
-  secret: ${{ secrets.SAGO_USER_JWT_SECRET }}
+  secret: ZG5JWFRBRzB2bXFzam5OX0lXVUxGTk1xcW40RFZHZEtMQUFmQ0dEVlhjVkpLOHdBSlV4bXRsbzNTd0MzZWlDaQo
   token-validity-in-seconds: 1800
 
 logging:
@@ -16,8 +16,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${{ secrets.SAGO_USER_EMAIL_ACCOUNT }}
-    password: ${{ secrets.SAGO_USER_EMAIL_PASSWORD }}
+    username: teamsagocorp
+    password: ffjoswlgpowdqeyd
     properties:
       mail:
         smtp:
@@ -92,3 +92,21 @@ app:
       jdbc-url: jdbc:mysql://server.sagogaja.com:3306/sago?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
       username: root
       password:
+
+---
+# test setting
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  redis:
+    host: test
+    port: 6379
+
+app:
+  datasource:
+    mysql:
+      jdbc-url: jdbc:tc:mysql:latest:///test?TC_INITSCRIPT=file:src/test/resources/integration_test_setting.sql
+      username: test
+      password: test
