@@ -1,4 +1,4 @@
-package com.dhmall.auction.pubsub;
+package com.dhmall.auction;
 
 import com.dhmall.auction.dto.ChatMessageDto;
 import com.fasterxml.jackson.databind.ObjectMapper;

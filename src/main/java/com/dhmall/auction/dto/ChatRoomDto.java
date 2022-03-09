@@ -18,4 +18,7 @@ public class ChatRoomDto implements Serializable {
     private String productCode;
 
     private String productName;
+
+    private String description;
+
 }
